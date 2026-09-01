@@ -31,14 +31,14 @@ export class UsersService {
       throw new BadRequestException("Ao menos um campo deve ser passado.");
     }
 
-    const { name, email, password } = updateUserDto;
+    const { name, email, password, credit } = updateUserDto;
 
     let passwordHash: string = "";
     if (password) {
       passwordHash = await hash(password, 8);
     }
 
-    return this.repo.update(id, { name, email, passwordHash });
+    return this.repo.update(id, { name, email, passwordHash, credit });
   }
 
   remove(id: string) {

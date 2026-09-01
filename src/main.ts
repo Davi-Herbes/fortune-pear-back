@@ -27,6 +27,11 @@ async function bootstrap() {
     },
   });
 
+  app.enableCors({
+    origin: "http://localhost:5500",
+    credentials: true,
+  });
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // Configurações para as validações de dados funcionarem

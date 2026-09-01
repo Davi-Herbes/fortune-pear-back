@@ -1,0 +1,1 @@
+ALTER TABLE `users` ADD `credit` real DEFAULT 20 NOT NULL;

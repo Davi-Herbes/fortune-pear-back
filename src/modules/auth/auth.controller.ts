@@ -14,10 +14,14 @@ import { CreateAuthDto } from "./dto/sign_in.dto.js";
 import { AuthGuard } from "./auth.guard.js";
 import { AuthRequest } from "./types/auth_request.js";
 import { FastifyReply } from "fastify";
+import { UsersService } from "../users/users.service.js";
 
 @Controller("auth")
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Post("login")
   async signIn(
@@ -33,8 +37,10 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get("profile")
-  getProfile(@Req() req: AuthRequest) {
-    return req.user;
+  async getProfile(@Req() req: AuthRequest) {
+    const { sub } = req.user;
+    const { passwordHash, id, ...user } = await this.usersService.findOne(sub);
+    return user;
   }
 
   @Delete("logout")
